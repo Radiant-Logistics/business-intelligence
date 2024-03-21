@@ -1,0 +1,24 @@
+*name* KPI Card = 
+
+var var_nominal = SWITCH(TRUE(), 
+[MoM Difference (*kpi_name*)] >= 1000000 && [MoM Difference (*kpi_name*)] < 10000000000, FORMAT([MoM Difference (*kpi_name*)], "$#,##0,,.00M"), // in millions (M)
+[MoM Difference (*kpi_name*)] >= 1000 && [MoM Difference (*kpi_name*)] < 1000000, FORMAT([MoM Difference (*kpi_name*)], "$#,.#K"), // in thousands (K)
+[MoM Difference (*kpi_name*)] < 0, FORMAT([MoM Difference (*kpi_name*)], "$#,##0;($#,##0)"), // for negative value
+[MoM Difference (*kpi_name*)]
+)
+var perc = [*name* MoM%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(), 
+                    var_nominal > 0, symbol_pos, symbol_neg) 
+                    &" "&
+                        if(
+                            ISBLANK(perc), 
+                                var_nominal,
+                                FORMAT(perc, "+0.0%;-0.0%;0%") & " |" &
+                                var_nominal
+                        )
+RETURN
+result
+//This is to calculate Month-over-Month change of the value; variance & percent change
