@@ -19,7 +19,7 @@ let
   #"Trimmed Text" = Table.TransformColumns(#"Renamed columns 1",{{"Currency", Text.Trim, type text}, {"Vendor", Text.Trim, type text}}),
   #"Changed column type 1" = Table.TransformColumnTypes(#"Trimmed Text", {{"Amount", Currency.Type}})
 in
-    #"Changed column type 1"
+    #"Changed column type 1" 
 
     //ML costs
 let
