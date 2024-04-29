@@ -1,0 +1,681 @@
+Posting Trend Report 
+URL: https://app.powerbi.com/links/kYK7zpJuGf?ctid=9ac3764d-cdfb-4d60-ba0d-fe03a4a3b5cb&pbi_source=linkShare&bookmarkGuid=a4cfd651-7ab4-4bc2-b705-74ff9d5c2fc6
+Data source: SharePoint
+Folder path: https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Dashboards/Posting Trend/Source/
+Refresh frequency: Every month
+Connection mode: Import
+
+Tables: 15 tables
+Pages: 6
+No. of DAX Measures: 113
+
+
+Measures used:
+
+Key Measures:
+
+Total Revenue = SUM('Posting Trend (SharePoint)'[Revenue])
+Total Costs = SUM('Posting Trend (SharePoint)'[Cost of Service])
+Gross Margin = [Total Revenue] - [Total Costs]
+Total Transactions = SUM('Posting Trend (SharePoint)'[Transactions])
+Total Station Commission = SUM('Posting Trend (SharePoint)'[Station Commission])
+Total Corp Commission = SUM('Posting Trend (SharePoint)'[Corp Commission])
+Stations Count (TM) = CALCULATE(DISTINCTCOUNT(Stations[Station]), FILTER('Posting Trend (SharePoint)', 'Posting Trend (SharePoint)'[Source System]= "TM"))
+Station Count = DISTINCTCOUNTNOBLANK('Posting Trend (SharePoint)'[Station])
+Gross Margin % = DIVIDE([Gross Margin],[Total Revenue],0)
+GM % for SC = DIVIDE([Total Station Commission], [Gross Margin])
+GM % for CC = DIVIDE([Total Corp Commission], [Gross Margin])
+Average Transaction = AVERAGE('Posting Trend (SharePoint)'[Transactions])
+Average Gross Margin = AVERAGE('Posting Trend (SharePoint)'[Gross Margin])
+Average GM % = [Average Gross Margin] / [Average Revenue]
+
+
+
+Time Intelligence Measures:
+
+Total Revenue YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([Total Revenue] - __PREV_YEAR, __PREV_YEAR)
+)
+
+Total Revenue Variance (QoQ) % = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_Q = CALCULATE([Total Revenue], DATEADD('Date'[Date], -1, QUARTER))
+	RETURN
+		DIVIDE([Total Revenue] - __PREV_Q, __PREV_Q)
+)
+
+Last Year Revenue = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+
+
+
+Total GM YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([Gross Margin], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([Gross Margin] - __PREV_YEAR, __PREV_YEAR)
+)
+
+Total GM Variance (QoQ) % = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_Q = CALCULATE([Gross Margin], DATEADD('Date'[Date], -1, QUARTER))
+	RETURN
+		DIVIDE([Gross Margin] - __PREV_Q, __PREV_Q)
+)
+
+Last Year Gross Margin = CALCULATE([Gross Margin], SAMEPERIODLASTYEAR('Date'[Date]))
+
+Total SC YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([Total Station Commission], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([Total Station Commission] - __PREV_YEAR, __PREV_YEAR)
+)
+
+Total SC Variance (QoQ) % = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_Q = CALCULATE([Total Station Commission], DATEADD('Date'[Date], -1, QUARTER))
+	RETURN
+		DIVIDE([Total Station Commission] - __PREV_Q, __PREV_Q)
+)
+
+Total CC YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([Total Corp Commission], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([Total Corp Commission] - __PREV_YEAR, __PREV_YEAR)
+)
+
+Total CC Variance (QoQ) % = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_Q = CALCULATE([Total Corp Commission], DATEADD('Date'[Date], -1, QUARTER))
+	RETURN
+		DIVIDE([Total Corp Commission] - __PREV_Q, __PREV_Q)
+)
+
+Total Transactions YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([Total Transactions], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([Total Transactions] - __PREV_YEAR, __PREV_YEAR)
+)
+
+Total Transactions Variance (QoQ) % = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_Q = CALCULATE([Total Transactions], DATEADD('Date'[Date], -1, QUARTER))
+	RETURN
+		DIVIDE([Total Transactions] - __PREV_Q, __PREV_Q)
+)
+
+
+Customs Measures:
+( Customize measures for the cards, charts, etc.)
+
+
+--KPI CARDS--
+Costs KPI card = 
+
+var var_nominal = [MoM Difference (Costs)]
+var var_perc = [Total Costs Variance (MoM) %]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+$#,0.0;-#,0;0"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+$#,0;-#,0;0")
+                        )
+RETURN
+    result
+
+Costs KPI Card (fx) = 
+
+var var_nominal = [MoM Difference (Costs)]
+
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+
+RETURN
+
+result
+
+CC KPI card = 
+
+var var_nominal = [MoM Difference (CC)]
+var var_perc = [Total CC Variance (QoQ) %]
+var var_nominal1 = [Total Corp Commission] - [Last Year CC]
+var var_perc1 = [Total CC YoY%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+var result1 = SWITCH(TRUE(),
+                    var_nominal1>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc1), 
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc1, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+    result2
+
+CC KPI Card (fx) = 
+
+var var_nominal = [MoM Difference (CC)]
+var var_nominal1 = [Total Corp Commission] - [Last Year CC]
+
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+var result1 = SWITCH(TRUE(), var_nominal1>=0, "#358686", "#B24A4A")
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+
+RETURN
+
+result2
+
+GM KPI card = 
+
+var var_nominal = [MoM Difference (GM)]
+var var_perc = [Total GM Variance (QoQ) %]
+var var_nominal1 = [Gross Margin] - [Last Year Gross Margin]
+var var_perc1 = [Total GM YoY%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+var result1 = SWITCH(TRUE(),
+                    var_nominal1>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc1), 
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc1, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+    result2
+
+GM KPI Card (fx) = 
+
+var var_nominal = [MoM Difference (GM)]
+var var_nominal1 = [Gross Margin] - [Last Year Gross Margin]
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+var result1 = SWITCH(TRUE(), var_nominal1>=0, "#358686", "#B24A4A")
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+
+result2
+
+Revenues KPI card = 
+
+var var_nominal = [QoQ Difference (Rev)]
+var var_perc = [Total Revenue Variance (QoQ) %]
+var var_nominal1 = [Total Revenue] - [Last Year Revenue]
+var var_perc1 = [Total Revenue YoY%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+var result1 = SWITCH(TRUE(),
+                    var_nominal1>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc1), 
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc1, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+    result2
+
+Revenues KPI Card (fx) = 
+
+var var_nominal = [QoQ Difference (Rev)]
+var var_nominal1 = [Total Revenue] - [Last Year Revenue]
+
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+var result1 = SWITCH(TRUE(), var_nominal1>=0, "#358686", "#B24A4A")
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+
+RETURN
+
+result2
+
+SC KPI card = 
+
+var var_nominal = [MoM Difference (SC)]
+var var_perc = [Total SC Variance (QoQ) %]
+var var_nominal1 = [Total Station Commission] - [Last Year SC]
+var var_perc1 = [Total SC YoY%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+
+var result1 = SWITCH(TRUE(),
+                    var_nominal1>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc1), 
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M"),
+                                FORMAT(var_perc1, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal1, "+$#,##0,,.0 M;-$#,##0,,.0 M")
+                        )
+
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+    result2
+
+SC KPI Card (fx) = 
+
+var var_nominal = [MoM Difference (SC)]
+var var_nominal1 = [Total Station Commission] - [Last Year SC]
+
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+var result1 = SWITCH(TRUE(), var_nominal1>=0, "#358686", "#B24A4A")
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+
+RETURN
+
+result2
+
+Transactions KPI card = 
+
+var var_nominal = [QoQ Difference (Transactions)]
+var var_perc = [Total Transactions Variance (QoQ) %]
+var var_nominal1 = [Total Transactions] - [Last Year Transactions]
+var var_perc1 = [Total Transactions YoY%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(),
+                    var_nominal>0, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc), 
+                                FORMAT(var_nominal, "+#,0.0;-#,0;0"),
+                                FORMAT(var_perc, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal, "+#,0;-#,0;0")
+                        )
+var result1 = SWITCH(TRUE(),
+                    var_nominal>10, symbol_pos,symbol_neg)
+                    &" "&
+                        if(
+                            ISBLANK(var_perc1), 
+                                FORMAT(var_nominal1, "+#,0.0;-#,0;0"),
+                                FORMAT(var_perc1, "+0.0%;-0.0%;0%") & " |" &
+                                FORMAT(var_nominal1, "+#,0;-#,0;0")
+                        )
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+RETURN
+    result2
+
+Transactions KPI Card (fx) = 
+
+var var_nominal = [QoQ Difference (Transactions)]
+var var_nominal1 = [Total Transactions] - [Last Year Transactions]
+var result = SWITCH(TRUE(), var_nominal>=0, "#358686", "#B24A4A")
+var result1 = SWITCH(TRUE(), var_nominal1>=0, "#358686", "#B24A4A")
+var result2 = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", result1, "QoQ", result)
+
+RETURN
+
+result2
+
+--LABELS--
+Total CC (Label) = FORMAT([Total Corp Commission], "$#,0")
+Total Costs (Label) = FORMAT([Total Costs], "$#,0")
+Total GM (Label) = FORMAT([Gross Margin], "$#,0")
+Total Revenue (Label) = FORMAT([Total Revenue], "$#,0")
+Total SC (Label) = FORMAT([Total Station Commission], "$#,0")
+Total Transactions (Label) = FORMAT([Total Transactions], "#,0")
+
+--DYNAMIC TITLES--
+Dynamic Label KPI card = SWITCH(SELECTEDVALUE('Time Intelligence Filter'[Filter]), "YoY", "var.(Year-over-Year)", "QoQ", "var.(Quarter-over-Quarter)")
+Dynamic Station Name - Title = 
+SWITCH(SELECTEDVALUE(Stations[Station Name]),
+SELECTEDVALUE(Stations[Station Name]), "Station: " & SELECTEDVALUE(Stations[Station Name])
+)
+Dynamic System Name - Title = 
+SWITCH(SELECTEDVALUE('Source System'[Source System]),
+SELECTEDVALUE('Source System'[Source System]), "System: " & SELECTEDVALUE('Source System'[Source System])
+)
+Dynamic Title - Donut Graph = 
+SWITCH(SELECTEDVALUE(BtnFilter[Column1]),
+SELECTEDVALUE(BtnFilter[Column1]), SELECTEDVALUE(BtnFilter[Column1]) & " by System")
+Dynamic Title - Line Graph = 
+SWITCH(SELECTEDVALUE(BtnFilter[Column1]),
+SELECTEDVALUE(BtnFilter[Column1]), "Average " & SELECTEDVALUE(BtnFilter[Column1]) & " per Month")
+
+--HIGHLIGHTING/CONDITIONAL FORMATTING--
+Highlight CF (Ave GM%) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average GM %] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average GM %] )
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Average GM %] = maxgm_pct, "#3cb371",
+        [Average GM %] = mingm_pct, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (Avg GM) = 
+VAR maxgm =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Gross Margin] )
+VAR mingm =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Gross Margin] )
+
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Average Gross Margin] = maxgm, "#3cb371",
+        [Average Gross Margin] = mingm, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (Avg Revenue) = 
+VAR maxgm =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Revenue] )
+VAR mingm =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Revenue] )
+
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Average Revenue] = maxgm, "#3cb371",
+        [Average Revenue] = mingm, "#B30838",
+        "#A9A8A9"
+    )
+RETURN
+    Color
+Highlight CF (GM % for CC) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for CC] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for CC] )
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [GM % for CC] = maxgm_pct, "#3cb371",
+        [GM % for CC] = mingm_pct, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (GM % for SC) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for SC] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for SC] )
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [GM % for SC] = maxgm_pct, "#3cb371",
+        [GM % for SC] = mingm_pct, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (GM) = 
+VAR maxgm =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin] )
+VAR mingm =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin] )
+
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Gross Margin] = maxgm, "#3cb371",
+        [Gross Margin] = mingm, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (GM%) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin %] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin %] )
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Gross Margin %] = maxgm_pct, "#3cb371",
+        [Gross Margin %] = mingm_pct, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight CF (Revenue) = 
+VAR maxgm =
+    MAXX ( ALL ( 'Date'[Date] ), [Total Revenue] )
+VAR mingm =
+    MINX ( ALL ( 'Date'[Date] ), [Total Revenue] )
+
+VAR Color =
+    SWITCH (
+        TRUE (),
+        [Total Revenue] = maxgm, "#3cb371",
+        [Total Revenue] = mingm, "#B30838",
+        "Light Grey"
+    )
+RETURN
+    Color
+Highlight DL = 
+VAR maxgm =
+    MAXX ( ALL ( 'Date'[Date] ), [Average GM %] )
+VAR mingm =
+    MINX ( ALL ( 'Date'[Date] ), [Average GM %] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Average GM %] = maxgm, [Average GM %],
+        [Average GM %] = mingm, [Average GM %],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "0.00%")
+Highlight DL (Ave GM%) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average GM %] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average GM %] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Average GM %] = maxgm_pct, [Average GM %],
+        [Average GM %] = mingm_pct, [Average GM %],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "0.0%")
+Highlight DL (Avg GM) = 
+VAR maxgm =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Gross Margin] )
+VAR mingm =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Gross Margin] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Average Gross Margin] = maxgm, [Average Gross Margin],
+        [Average Gross Margin] = mingm, [Average Gross Margin],
+        BLANK()
+    )
+RETURN
+    SWITCH(TRUE(), 
+    DataPoints > 1000000 && DataPoints < 1000000000, FORMAT(DataPoints, "$##,.00 M"),
+    DataPoints < 1000000, FORMAT(DataPoints, "$##,.00 K"),
+    FORMAT(DataPoints, "$##,.0")
+    )
+Highlight DL (Avg. Revenue) = 
+VAR maxrv =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Revenue] )
+VAR minrv =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Average Revenue] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Average Revenue] = maxrv, [Average Revenue],
+        [Average Revenue] = minrv, [Average Revenue],
+        BLANK()
+    )
+RETURN
+    SWITCH(TRUE(), 
+    DataPoints > 1000000 && DataPoints < 1000000000, FORMAT(DataPoints, "$##,.00 M"),
+    DataPoints < 1000000, FORMAT(DataPoints, "$##,.00 K"),
+    FORMAT(DataPoints, "$##,.0")
+    )
+Highlight DL (GM) = 
+VAR maxgm =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin] )
+VAR mingm =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Gross Margin] = maxgm, [Gross Margin],
+        [Gross Margin] = mingm, [Gross Margin],
+        BLANK()
+    )
+RETURN
+    DataPoints
+Highlight DL (GM% for CC) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for CC] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for CC] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [GM % for CC] = maxgm_pct, [GM % for CC],
+        [GM % for CC] = mingm_pct, [GM % for CC],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "0.0%")
+Highlight DL (GM% for SC) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for SC] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [GM % for SC] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [GM % for SC] = maxgm_pct, [GM % for SC],
+        [GM % for SC] = mingm_pct, [GM % for SC],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "0.0%")
+Highlight DL (GM%) = 
+VAR maxgm_pct =
+    MAXX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin %] )
+VAR mingm_pct =
+    MINX ( ALLSELECTED('Date'[Month],'Date'[Month Name] ), [Gross Margin %] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Gross Margin %] = maxgm_pct, [Gross Margin %],
+        [Gross Margin %] = mingm_pct, [Gross Margin %],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "0.0%")
+Highlight DL (Rev or GM) = 
+VAR Average_Val = [Revenue or Gross Margin Value:]
+VAR maxrv =
+    MAXX ( ALL('Date'), [Revenue or Gross Margin Value:] )
+VAR minrv =
+    MINX ( ALL('Date'), [Revenue or Gross Margin Value:] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        Average_Val = maxrv, [Revenue or Gross Margin Value:],
+        Average_Val = minrv, [Revenue or Gross Margin Value:],
+        BLANK()
+    )
+
+    //IF(Average_Val= maxrv || Average_Val=minrv, 1, 0)
+RETURN
+    //DataPoints
+    FORMAT(DataPoints, "$0,00.00")
+Highlight DL (Revenue) = 
+VAR maxrv =
+    MAXX ( ALL ( 'Date'[Date] ), [Total Revenue] )
+VAR minrv =
+    MINX ( ALL ( 'Date'[Date] ), [Total Revenue] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [Total Revenue] = maxrv, [Total Revenue],
+        [Total Revenue] = minrv, [Total Revenue],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "$##,.00 M")
