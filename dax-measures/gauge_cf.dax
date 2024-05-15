@@ -1,0 +1,16 @@
+gauge_cf = 
+
+var MaxValue = [measure_name]
+var perc_30 = MaxValue * .3         // 30% of its value.
+var perc_70 = MaxValue * .7         // 70% of its value.
+var perc_100 = MaxValue * 1         // 100% of its value.
+
+
+var result = SWITCH(TRUE(), 
+[International Costs] <= perc_30, "#B30838",  //if current value is <= the 30% of the maximum value(MaxValue)
+[International Costs] <= perc_70, "#eee600",  //if current value is <= the 70% of the maximum value(MaxValue)  
+[International Costs] <= perc_100, "#32cd32"  //if current value is <= the 100% of the maximum value(MaxValue)
+)
+
+RETURN
+result

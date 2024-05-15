@@ -1,0 +1,19 @@
+*measure_name* KPI Card = 
+
+var var_nominal = [measure_name]
+var perc = [*[measure_name* MoM%]
+var symbol_pos = "↑"
+var symbol_neg = "↓"
+
+var result = SWITCH(TRUE(), 
+                    var_nominal > 0, symbol_pos, symbol_neg) 
+                    &" "&
+                        if(
+                            ISBLANK(perc), 
+                                var_nominal,
+                                FORMAT(perc, "+0.0%;-0.0%;0%") & " |" &
+                                var_nominal
+                        )
+RETURN
+result
+//This is to calculate Month-over-Month change of the value; variance & percent change
