@@ -1,0 +1,1 @@
+Stations Count (TM) = CALCULATE(DISTINCTCOUNT(Stations[Station]), FILTER('Posting Trend (SharePoint)', 'Posting Trend (SharePoint)'[Source System]= "TM"))

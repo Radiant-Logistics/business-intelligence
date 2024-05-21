@@ -1,0 +1,1 @@
+Gross Margin % = DIVIDE([Gross Margin],[Total Revenue],0)

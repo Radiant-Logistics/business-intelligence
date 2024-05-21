@@ -1,0 +1,3 @@
+Average Gross Margin = 
+ 
+ AVERAGE('Posting Trend (SharePoint)'[Gross Margin])

@@ -1,0 +1,1 @@
+Last Year Revenue = CALCULATE([*measure here*], SAMEPERIODLASTYEAR('Date'[Date]))

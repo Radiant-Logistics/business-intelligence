@@ -1,0 +1,10 @@
+Total YoY% = 
+IF(
+	ISFILTERED('Date'[Date]),
+	ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+	VAR __PREV_YEAR = CALCULATE([*measure here*], SAMEPERIODLASTYEAR('Date'[Date]))
+	RETURN
+		DIVIDE([*measure here*] - __PREV_YEAR, __PREV_YEAR)
+)
+
+//Yearly variance %

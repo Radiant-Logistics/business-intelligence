@@ -1,0 +1,17 @@
+VAR MaxDate = MAX(MergedDates[Posted Date]) //get latest date
+VAR MinDate = MaxDate - 398 // Assuming a year has 365 days
+RETURN
+CALCULATE(
+    MAXX(
+        SUMMARIZE(
+            FILTER(
+                ALL(MergedDates),
+                MergedDates[Posted Date]>= MinDate && MergedDates[Posted Date]<= MaxDate
+            ),
+            MergedDates[YEAR],
+            MergedDates[MonthName],
+            "Total Revenue", SUM(Revenue[Gross])
+        ),
+        [Total Revenue]
+    ), Revenue[Transportation Mode] IN {"Domestic Air", "Road"}, Revenue[Gross Currency] = "USD"
+)

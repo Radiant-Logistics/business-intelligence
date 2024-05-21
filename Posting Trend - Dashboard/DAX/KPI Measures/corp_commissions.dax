@@ -1,0 +1,1 @@
+Total Corp Commission = SUM('Posting Trend (SharePoint)'[Corp Commission])

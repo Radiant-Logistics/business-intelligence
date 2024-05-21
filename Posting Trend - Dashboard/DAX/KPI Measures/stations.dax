@@ -1,0 +1,1 @@
+Station Count = DISTINCTCOUNTNOBLANK('Posting Trend (SharePoint)'[Station])

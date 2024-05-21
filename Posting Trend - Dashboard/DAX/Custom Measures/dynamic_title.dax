@@ -1,0 +1,5 @@
+Dynamic Title = 
+
+SWITCH(SELECTEDVALUE(*column name here*),
+SELECTEDVALUE(*column name here*), "Title: " & SELECTEDVALUE(*column name here*)
+)

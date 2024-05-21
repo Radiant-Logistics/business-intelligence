@@ -1,0 +1,8 @@
+International Revenue (Latest) = 
+var MaxDate = MAX(Revenue[Posted Date])
+
+return 
+CALCULATE(SUM(Revenue[Gross]), 
+FILTER(Revenue, YEAR(Revenue[Posted Date]) = YEAR(TODAY()) && MONTH(Revenue[Posted Date]) = MONTH(TODAY()) -1), 
+Revenue[Gross Currency] = "USD", 
+Revenue[Transportation Mode] IN {"International Air", "Ocean"} )

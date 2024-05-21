@@ -1,0 +1,17 @@
+Highlight DL (*measure name*) = 
+VAR maxrv =
+    MAXX ( ALL ( 'Date'[Date] ), [*measure here*] )
+VAR minrv =
+    MINX ( ALL ( 'Date'[Date] ), [*measure here*] )
+VAR DataPoints =
+    SWITCH (
+        TRUE (),
+        [*measure here*] = maxrv, [*measure here*],
+        [*measure here*] = minrv, [*measure here*],
+        BLANK()
+    )
+RETURN
+    FORMAT(DataPoints, "$##,.00 M")
+
+
+//This is to highlight max and min datapoints 
