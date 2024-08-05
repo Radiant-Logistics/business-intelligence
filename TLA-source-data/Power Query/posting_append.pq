@@ -8,3 +8,4 @@ let
     #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File")))
 in
     #"Expanded Table Column1"
+

@@ -1,5 +1,6 @@
+// cleaned data - file path: dev-fsx/BI-Data-Prod/TLA/source-data/Shipments.xlsx
 let
-    Source = posting,
+    Source = posting, // file path: dev-fsx/BI-Data-Prod/source-system/SAPTM/posting
     #"Removed Columns" = Table.RemoveColumns(Source,{"Source.Name", "MAWB", "LH Vendor", "LH Amount", "LH Currency", "PU Vendor", "PU Amount", "PU Currency", "DL Vendor", "DL Amount", "DL Currency", "Misc Vendor", "Misc Amount", "Misc Currency", "Station", "Station Currency", "G&A", "G&A Currency", "Variance", "Total Variance"}),
     #"Split Column by Delimiter" = Table.SplitColumn(#"Removed Columns", "Posted Date", Splitter.SplitTextByDelimiter(" ", QuoteStyle.Csv), {"Posted Date.1", "Posted Date.2", "Posted Date.3"}),
     #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"Posted Date.1", type date}, {"Posted Date.2", type time}, {"Posted Date.3", type text}}),

@@ -1,0 +1,24 @@
+
+//transformed with port data for report/pivot
+
+
+let
+    Source = Excel.Workbook(File.Contents("Z:\TLA\source-data\SAPTM\Shipment.xlsx"), null, true),
+    shipments_Table = Source{[Item="shipments",Kind="Table"]}[Data],
+    #"Changed Type" = Table.TransformColumnTypes(shipments_Table,{{"House Bill of Lading", type text}, {"Station name", type text}, {"Transp. Mode Description", type text}, {"Traffic Direction", type text}, {"Movement Type", type text}, {"INCO", type text}, {"Routed", type text}, {"Srv Level Description", type text}, {"Created On Date", type date}, {"Pick-Up Date (From)", type date}, {"Pick-Up Date (To)", type date}, {"Source Location Description", type text}, {"Destination Location Descripti", type text}, {"Source Location City", type text}, {"Source Location Country", type text}, {"Destination Location City", type text}, {"Destination Location Country", type text}, {"Ordering Party Description", type text}, {"Origin APC", type text}, {"Dest APC", type text}, {"Quantity", Int64.Type}, {"Quantity UoM", type text}, {"Gross Volume", type number}, {"Gross Vol. UoM", type text}, {"Gross Weight", type number}, {"Gr. Wt UoM", type text}, {"Pro/MAWB No", type text}, {"Dimensional Weight", type number}, {"Dimensional Weight UOM", type text}, {"Source Location Region", type text}, {"Source Location Zip Code", type text}, {"Destination Location Region", type text}, {"Destination Location Zip Code", type text}, {"Origin ACI Zone", type text}, {"Dest ACI Zone", type text}, {"Port of Loading", type text}, {"Port of Discharge", type any}}),
+    #"Replaced Value1" = Table.ReplaceValue(#"Changed Type",null,0,Replacer.ReplaceValue,{"Gross Weight"}),
+    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1",null,0,Replacer.ReplaceValue,{"Dimensional Weight"}),
+    #"Replaced Value" = Table.ReplaceValue(#"Replaced Value2",null,0,Replacer.ReplaceValue,{"Dimensional Weight"}),
+    #"Added Custom" = Table.AddColumn(#"Replaced Value", "Chargeable Weight", each if [Dimensional Weight] > [Gross Weight] then [Dimensional Weight] else [Gross Weight]),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Chargeable Weight", type number}}),
+    #"Added Custom1" = Table.AddColumn(#"Changed Type1", "Ch Wt KG", each if [Gr. Wt UoM]= "LB" then ([Chargeable Weight])*.453592 else [Chargeable Weight]),
+    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "Trade Lane", each [Origin APC] & "-"& [Dest APC]),
+    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom2",{{"Trade Lane", type text}, {"POD SFB Date", type date}, {"Delivery Date (To)", type date}, {"Overseas Agent", type text}, {"Document", type text}, {"Port of Loading", type text}, {"Port of Discharge", type text}, {"Ch Wt KG", type number}}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type2",{"Document", "House Bill of Lading", "Station name", "Transp. Mode Description", "Traffic Direction", "Movement Type", "INCO", "Routed", "Srv Level Description", "Created On Date", "Pick-Up Date (From)", "Pick-Up Date (To)", "Source Location Description", "Destination Location Descripti", "Source Location City", "Source Location Country", "Destination Location City", "Destination Location Country", "Ordering Party Description", "Origin APC", "Dest APC", "Quantity", "Quantity UoM", "Gross Volume", "Gross Vol. UoM", "Gross Weight", "Gr. Wt UoM", "Pro/MAWB No", "Dimensional Weight", "Dimensional Weight UOM", "Source Location Region", "Source Location Zip Code", "Destination Location Region", "Destination Location Zip Code", "Origin ACI Zone", "Dest ACI Zone", "Port of Loading", "Port of Discharge", "Chargeable Weight", "Ch Wt KG", "Trade Lane"}),
+    #"Filtered Rows" = Table.SelectRows(#"Reordered Columns", each [House Bill of Lading] <> null and [House Bill of Lading] <> ""),
+    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Document] <> null and [Document] <> ""),
+    #"Renamed Columns" = Table.RenameColumns(#"Filtered Rows1",{{"Transp. Mode Description", "Mode"}, {"Pick-Up Date (From)", "Pick-Up Date"}}),
+    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns",{"Pick-Up Date (To)"}),
+    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns",{{"POD SFB Date", "POD Date"}, {"Srv Level Description", "Service Level"}, {"Created On Date", "Created Date"}, {"Source Location Description", "Shipper Name"}, {"Destination Location Descripti", "Consignee Name"}, {"Source Location City", "Origin City"}, {"Source Location Country", "Origin Country"}, {"Destination Location City", "Dest City"}, {"Destination Location Country", "Dest Country"}, {"Ordering Party Description", "Customer Name"}, {"Delivery Date (To)", "Delivery Date"}})
+in
+    #"Renamed Columns1"

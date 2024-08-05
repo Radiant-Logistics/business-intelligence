@@ -1,4 +1,4 @@
-//Pick up costs: UPDATE STEPS that are indented
+//Pick up costs
 let
   Source = posting,
   #"Removed Columns" = Table.RemoveColumns(Source,{"Source.Name"}),
@@ -8,16 +8,16 @@ let
   #"Renamed columns - Posted Date" = Table.RenameColumns(#"Changed column type - Posted Date", {{"Posted Date.1", "Posted Date"}, {"Posted Date.2", "Posted Time"}, {"Posted Date.3", "Posted TZ"}}),
     #"Removed Doc Type" = Table.RemoveColumns(#"Renamed columns - Posted Date", {"Document Type", "Bill To Party ID", "Bill To Party Name", "Invoice Number", "Invoice Date", "Posted Time", "Posted TZ", "Gross", "Gross Currency", "MAWB", "Station", "Total Variance", "Station Currency", "G&A", "G&A Currency", "Variance", "Misc Currency", "Misc Amount", "Misc Vendor", "DL Currency", "DL Amount", "DL Vendor", "LH Currency", "LH Amount", "LH Vendor", "PU Currency"}),
   #"Added index" = Table.AddIndexColumn(#"Removed Doc Type", "Index", 1, 1, Int64.Type),
-  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
+  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
   #"Split column by delimiter" = Table.SplitColumn(#"Unpivoted columns", "Value", Splitter.SplitTextByDelimiter("#(lf)"), {"Value.1", "Value.2", "Value.3", "Value.4", "Value.5", "Value.6", "Value.7", "Value.8", "Value.9", "Value.10", "Value.11", "Value.12", "Value.13", "Value.14", "Value.15", "Value.16", "Value.17", "Value.18", "Value.19", "Value.20", "Value.21", "Value.22", "Value.23", "Value.24", "Value.25", "Value.26", "Value.27", "Value.28", "Value.29", "Value.30", "Value.31", "Value.32", "Value.33", "Value.34", "Value.35"}),
-  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
+  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
   #"Pivoted column 1" = Table.Pivot(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}}), List.Distinct(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}})[Attribute]), "Attribute", "Value"),
   #"Removed columns" = Table.RemoveColumns(#"Pivoted column 1",{"Attribute (2)", "Index"}),
     #"Split column by delimiter 1" = Table.SplitColumn(#"Removed columns", "PU Amount", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv), {"PU Amount.1", "PU Amount.2"}),
     #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Split column by delimiter 1", "Cost Type", each "PU"), {{"Cost Type", type text}}),
     #"Renamed columns 1" = Table.RenameColumns(#"Added custom", {{"PU Vendor", "Vendor"}, {"PU Amount.1", "Amount"}, {"PU Amount.2", "Currency"}}),
   #"Trimmed Text" = Table.TransformColumns(#"Renamed columns 1",{{"Currency", Text.Trim, type text}, {"Vendor", Text.Trim, type text}}),
-  #"Changed column type 1" = Table.TransformColumnTypes(#"Trimmed Text", {{"Amount", Currency.Type}})
+  #"Changed column type 1" = Table.TransformColumnTypes(#"Trimmed Text", {{"FWO", type text},{"Amount", Currency.Type}})
 in
     #"Changed column type 1"
 
@@ -31,16 +31,16 @@ let
   #"Renamed columns - Posted Date" = Table.RenameColumns(#"Changed column type - Posted Date", {{"Posted Date.1", "Posted Date"}, {"Posted Date.2", "Posted Time"}, {"Posted Date.3", "Posted TZ"}}),
     #"Removed Doc Type" = Table.RemoveColumns(#"Renamed columns - Posted Date", {"Document Type", "Bill To Party ID", "Bill To Party Name", "Invoice Number", "Invoice Date", "Posted Time", "Posted TZ", "Gross", "Gross Currency", "MAWB", "Station", "Total Variance", "Station Currency", "G&A", "G&A Currency", "Variance", "Misc Currency", "Misc Amount", "Misc Vendor", "DL Currency", "DL Amount", "DL Vendor", "PU Currency", "PU Amount", "PU Vendor", "LH Currency"}),
   #"Added index" = Table.AddIndexColumn(#"Removed Doc Type", "Index", 1, 1, Int64.Type),
-  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
+  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
   #"Split column by delimiter" = Table.SplitColumn(#"Unpivoted columns", "Value", Splitter.SplitTextByDelimiter("#(lf)"), {"Value.1", "Value.2", "Value.3", "Value.4", "Value.5", "Value.6", "Value.7", "Value.8", "Value.9", "Value.10", "Value.11", "Value.12", "Value.13", "Value.14", "Value.15", "Value.16", "Value.17", "Value.18", "Value.19", "Value.20", "Value.21", "Value.22", "Value.23", "Value.24", "Value.25", "Value.26", "Value.27", "Value.28", "Value.29", "Value.30", "Value.31", "Value.32", "Value.33", "Value.34", "Value.35"}),
-  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
+  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
   #"Pivoted column 1" = Table.Pivot(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}}), List.Distinct(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}})[Attribute]), "Attribute", "Value"),
   #"Removed columns" = Table.RemoveColumns(#"Pivoted column 1",{"Attribute (2)", "Index"}),
     #"Split column by delimiter 1" = Table.SplitColumn(#"Removed columns", "LH Amount", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv), {"LH Amount.1", "LH Amount.2"}),
     #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Split column by delimiter 1", "Cost Type", each "ML"), {{"Cost Type", type text}}),
     #"Renamed columns 1" = Table.RenameColumns(#"Added custom", {{"LH Vendor", "Vendor"}, {"LH Amount.1", "Amount"}, {"LH Amount.2", "Currency"}}),
   #"Trimmed Text" = Table.TransformColumns(#"Renamed columns 1",{{"Currency", Text.Trim, type text}, {"Vendor", Text.Trim, type text}}),
-  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"Amount", Currency.Type}})
+  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"FWO", type text}, {"Amount", Currency.Type}})
 in
     #"Changed Type"
 
@@ -54,16 +54,16 @@ let
   #"Renamed columns - Posted Date" = Table.RenameColumns(#"Changed column type - Posted Date", {{"Posted Date.1", "Posted Date"}, {"Posted Date.2", "Posted Time"}, {"Posted Date.3", "Posted TZ"}}),
    #"Removed Doc Type" = Table.RemoveColumns(#"Renamed columns - Posted Date", {"Document Type", "Bill To Party ID", "Bill To Party Name", "Invoice Number", "Invoice Date", "Posted Time", "Posted TZ", "Gross", "Gross Currency", "MAWB", "Station", "Total Variance", "Station Currency", "G&A", "G&A Currency", "Variance", "Misc Currency", "Misc Amount", "Misc Vendor", "LH Currency", "LH Amount", "LH Vendor", "PU Currency", "PU Amount", "PU Vendor", "DL Currency"}),
   #"Added index" = Table.AddIndexColumn(#"Removed Doc Type", "Index", 1, 1, Int64.Type),
-  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
+  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
   #"Split column by delimiter" = Table.SplitColumn(#"Unpivoted columns", "Value", Splitter.SplitTextByDelimiter("#(lf)"), {"Value.1", "Value.2", "Value.3", "Value.4", "Value.5", "Value.6", "Value.7", "Value.8", "Value.9", "Value.10", "Value.11", "Value.12", "Value.13", "Value.14", "Value.15", "Value.16", "Value.17", "Value.18", "Value.19", "Value.20", "Value.21", "Value.22", "Value.23", "Value.24", "Value.25", "Value.26", "Value.27", "Value.28", "Value.29", "Value.30", "Value.31", "Value.32", "Value.33", "Value.34", "Value.35"}),
-  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
+  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
   #"Pivoted column 1" = Table.Pivot(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}}), List.Distinct(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}})[Attribute]), "Attribute", "Value"),
   #"Removed columns" = Table.RemoveColumns(#"Pivoted column 1",{"Attribute (2)", "Index"}),
     #"Split column by delimiter 1" = Table.SplitColumn(#"Removed columns", "DL Amount", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv), {"DL Amount.1", "DL Amount.2"}),
     #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Split column by delimiter 1", "Cost Type", each "DL"), {{"Cost Type", type text}}),
     #"Renamed columns 1" = Table.RenameColumns(#"Added custom", {{"DL Vendor", "Vendor"}, {"DL Amount.1", "Amount"}, {"DL Amount.2", "Currency"}}),
   #"Trimmed Text" = Table.TransformColumns(#"Renamed columns 1",{{"Currency", Text.Trim, type text}, {"Vendor", Text.Trim, type text}}),
-  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"Amount", Currency.Type}})
+  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"FWO", type text}, {"Amount", Currency.Type}})
 in
     #"Changed Type"
 
@@ -77,15 +77,21 @@ let
   #"Renamed columns - Posted Date" = Table.RenameColumns(#"Changed column type - Posted Date", {{"Posted Date.1", "Posted Date"}, {"Posted Date.2", "Posted Time"}, {"Posted Date.3", "Posted TZ"}}),
    #"Removed Doc Type" = Table.RemoveColumns(#"Renamed columns - Posted Date", {"Document Type", "Bill To Party ID", "Bill To Party Name", "Invoice Number", "Invoice Date", "Posted Time", "Posted TZ", "Gross", "Gross Currency", "MAWB", "Station", "Total Variance", "Station Currency", "G&A", "G&A Currency", "Variance", "DL Currency", "DL Amount", "DL Vendor", "LH Currency", "LH Amount", "LH Vendor", "PU Currency", "PU Amount", "PU Vendor", "Misc Currency"}),
   #"Added index" = Table.AddIndexColumn(#"Removed Doc Type", "Index", 1, 1, Int64.Type),
-  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
+  #"Unpivoted columns" = Table.UnpivotOtherColumns(#"Added index", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index"}, "Attribute", "Value"),
   #"Split column by delimiter" = Table.SplitColumn(#"Unpivoted columns", "Value", Splitter.SplitTextByDelimiter("#(lf)"), {"Value.1", "Value.2", "Value.3", "Value.4", "Value.5", "Value.6", "Value.7", "Value.8", "Value.9", "Value.10", "Value.11", "Value.12", "Value.13", "Value.14", "Value.15", "Value.16", "Value.17", "Value.18", "Value.19", "Value.20", "Value.21", "Value.22", "Value.23", "Value.24", "Value.25", "Value.26", "Value.27", "Value.28", "Value.29", "Value.30", "Value.31", "Value.32", "Value.33", "Value.34", "Value.35"}),
-  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
+  #"Unpivoted columns 1" = Table.UnpivotOtherColumns(#"Split column by delimiter", {"FWO", "House Bill Number", "Station Name", "Transportation Mode", "Posted Date", "Index", "Attribute"}, "Attribute (2)", "Value"),
   #"Pivoted column 1" = Table.Pivot(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}}), List.Distinct(Table.TransformColumnTypes(#"Unpivoted columns 1", {{"Attribute", type text}})[Attribute]), "Attribute", "Value"),
   #"Removed columns" = Table.RemoveColumns(#"Pivoted column 1",{"Attribute (2)", "Index"}),
     #"Split column by delimiter 1" = Table.SplitColumn(#"Removed columns", "Misc Amount", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv), {"Misc Amount.1", "Misc Amount.2"}),
     #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Split column by delimiter 1", "Cost Type", each "Misc"), {{"Cost Type", type text}}),
     #"Renamed columns 1" = Table.RenameColumns(#"Added custom", {{"Misc Vendor", "Vendor"}, {"Misc Amount.1", "Amount"}, {"Misc Amount.2", "Currency"}}),
   #"Trimmed Text" = Table.TransformColumns(#"Renamed columns 1",{{"Currency", Text.Trim, type text}, {"Vendor", Text.Trim, type text}}),
-  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"Amount", Currency.Type}})
+  #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"FWO", type text}, {"Amount", Currency.Type}})
 in
     #"Changed Type"
+
+// ALL costs appended
+let
+    Source = Table.Combine({PU, ML, DL, MISC})
+in
+    Source

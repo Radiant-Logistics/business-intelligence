@@ -1,0 +1,40 @@
+Sub RefreshAllWorkbooks()
+    ' Disable system messages
+    Application.DisplayAlerts = False
+    
+    ' Define the path to the folder
+    Dim folderPath As String
+    folderPath = "Z:\TLA\source-data\SAPTM\"
+    
+    ' Define the workbooks to be refreshed
+    Dim workbookNames As Variant
+    workbookNames = Array("Ports.xlsx", "Shipment.xlsx", "Revenue.xlsx", "Cost.xlsx") ' Add all your filenames here
+    
+    Dim wb As Workbook
+    Dim fileName As Variant
+    
+    ' Loop through each workbook
+    For Each fileName In workbookNames
+        ' Open the workbook
+        Set wb = Workbooks.Open(fileName:=folderPath & fileName)
+        
+        ' Refresh all queries
+        wb.RefreshAll
+        
+        ' Wait for queries to refresh
+        Do Until Application.CalculationState = xlDone
+            DoEvents
+        Loop
+        
+        Application.CalculateUntilAsyncQueriesDone
+        
+        ' Save the workbook
+        wb.Save
+        
+        ' Close the workbook
+        wb.Close SaveChanges:=True
+    Next fileName
+    
+    ' Re-enable system messages
+    Application.DisplayAlerts = True
+End Sub
