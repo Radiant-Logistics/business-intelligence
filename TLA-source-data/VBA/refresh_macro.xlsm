@@ -1,4 +1,12 @@
 Sub RefreshAllWorkbooks()
+
+    ' Declare variables to store start and end times
+    Dim startTime As Double
+    Dim endTime As Double
+    Dim elapsedTime As String
+
+    ' Get the current time and store it as the start time
+    startTime = Timer
     ' Disable system messages
     Application.DisplayAlerts = False
     
@@ -8,7 +16,7 @@ Sub RefreshAllWorkbooks()
     
     ' Define the workbooks to be refreshed
     Dim workbookNames As Variant
-    workbookNames = Array("Ports.xlsx", "Shipment.xlsx", "Revenue.xlsx", "Cost.xlsx") ' Add all your filenames here
+    workbookNames = Array("Ports.xlsx", "Shipment.xlsx", "Revenue.xlsx", "Cost.xlsx")   ' Add all your filenames here
     
     Dim wb As Workbook
     Dim fileName As Variant
@@ -37,4 +45,15 @@ Sub RefreshAllWorkbooks()
     
     ' Re-enable system messages
     Application.DisplayAlerts = True
+    
+    ' Get the current time and store it as the end time
+    endTime = Timer
+
+    ' Calculate the elapsed time in seconds and format it as hh:mm:ss
+    elapsedTime = Format((endTime - startTime) / 86400, "hh:mm:ss")
+
+    ' Display the end time and total elapsed time with line breaks
+    MsgBox "Refresh Complete! Start Time: " & Format(TimeValue(Now - (endTime - startTime) / 86400), "hh:mm:ss AM/PM") & vbCrLf & _
+           "Complete Time " & Format(TimeValue(Now), "hh:mm:ss AM/PM") & vbCrLf & _
+           "Total Time: " & elapsedTime
 End Sub
