@@ -57,3 +57,63 @@ Sub RefreshAllWorkbooks()
            "Complete Time " & Format(TimeValue(Now), "hh:mm:ss AM/PM") & vbCrLf & _
            "Total Time: " & elapsedTime
 End Sub
+
+Sub RefreshReport()
+
+    ' Declare variables to store start and end times
+    Dim startTime As Double
+    Dim endTime As Double
+    Dim elapsedTime As String
+
+    ' Get the current time and store it as the start time
+    startTime = Timer
+    ' Disable system messages
+    Application.DisplayAlerts = False
+    
+    ' Define the path to the folder
+    Dim folderPath As String
+    folderPath = "Z:\TLA\INTL\"
+    
+    ' Define the workbooks to be refreshed
+    Dim workbookNames As Variant
+    workbookNames = Array("TLA_Report_v2.3.xlsx")   ' Add all your filenames here
+    
+    Dim wb As Workbook
+    Dim fileName As Variant
+    
+    ' Loop through each workbook
+    For Each fileName In workbookNames
+        ' Open the workbook
+        Set wb = Workbooks.Open(fileName:=folderPath & fileName)
+        
+        ' Refresh all queries
+        wb.RefreshAll
+        
+        ' Wait for queries to refresh
+        Do Until Application.CalculationState = xlDone
+            DoEvents
+        Loop
+        
+        Application.CalculateUntilAsyncQueriesDone
+        
+        ' Save the workbook
+        wb.Save
+        
+        ' Close the workbook
+        wb.Close SaveChanges:=True
+    Next fileName
+    
+    ' Re-enable system messages
+    Application.DisplayAlerts = True
+    
+    ' Get the current time and store it as the end time
+    endTime = Timer
+
+    ' Calculate the elapsed time in seconds and format it as hh:mm:ss
+    elapsedTime = Format((endTime - startTime) / 86400, "hh:mm:ss")
+
+    ' Display the end time and total elapsed time with line breaks
+    MsgBox "Refresh Complete! Start Time: " & Format(TimeValue(Now - (endTime - startTime) / 86400), "hh:mm:ss AM/PM") & vbCrLf & _
+           "Complete Time " & Format(TimeValue(Now), "hh:mm:ss AM/PM") & vbCrLf & _
+           "Total Time: " & elapsedTime
+End Sub
