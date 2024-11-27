@@ -1,3 +1,8 @@
+// Create a query for the MaxYear 
+// Use the script below to create the Date Function
+// Invoke the function with start and end dates for example: 1/1/20 to 12/31/2024
+// Go to the Date Table and replace the end year with 'MaxYear'
+
 let fnDateTable = ( StartDate as date, EndDate as date, optional FYStartMonthNum as number, optional Holidays as list, optional WDStartNum as number, optional AddRelativeNetWorkdays as logical ) as table =>
   let
       FYStartMonth = List.Select( {1..12}, each _ = FYStartMonthNum ){0}? ?? 1,
