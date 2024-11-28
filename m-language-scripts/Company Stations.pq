@@ -1,0 +1,26 @@
+let
+    Source = SharePoint.Files("https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC", [ApiVersion = 15]),
+    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Dashboards/TLA/Source/") and ([Name] = "Radiant Directory Master 0824.xlsx")),
+    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (2)", each #"Transform File (2)"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (2)"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (2)", Table.ColumnNames(#"Transform File (2)"(#"Sample File (2)"))),
+    #"Expanded Data" = Table.ExpandTableColumn(#"Expanded Table Column1", "Data", {"Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7"}, {"Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7"}),
+    #"Filtered Rows1" = Table.SelectRows(#"Expanded Data", each ([Column5] <> "ADCOM WORLDWIDE" and [Column5] <> "DISTRIBUTION BY AIR" and [Column5] <> "SERVICE BY AIR") and ([Name] = "Company Stores") and ([Column4] <> "RADIANT" and [Column4] <> "RADIANT WORLD TRADE SERVICES")),
+    #"Promoted Headers" = Table.PromoteHeaders(#"Filtered Rows1", [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Company Stores", type text}, {"MANAGER/OWNER", type text}, {"EMAIL", type text}, {"STATION", type text}, {"ADDRESS", type text}, {"Company Stores_1", type text}}),
+    #"Filtered Rows2" = Table.SelectRows(#"Changed Type", each ([#"MANAGER/OWNER"] <> "MANAGER/OWNER")),
+    #"Merged Columns" = Table.AddColumn(#"Filtered Rows2", "Merged", each Text.Combine({[STATION], [#"TOLL FREE #"], [#"LOCAL #"], [ADDRESS]}, ""), type text),
+    #"Replaced Value" = Table.ReplaceValue(#"Merged Columns","(","",Replacer.ReplaceText,{"TOLL FREE #", "LOCAL #"}),
+    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value",") ","-",Replacer.ReplaceText,{"TOLL FREE #", "LOCAL #"}),
+    #"Filtered Rows3" = Table.SelectRows(#"Replaced Value1", each [Merged] <> null and [Merged] <> ""),
+    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows3",{"Merged"}),
+    #"Filtered Rows4" = Table.SelectRows(#"Removed Columns", each ([STATION] <> null and [STATION] <> "")),
+    #"Renamed Columns" = Table.RenameColumns(#"Filtered Rows4",{{"Company Stores", "Type"}, {"TOLL FREE #", "Phone Number"}, {"LOCAL #", "Local Number"}, {"ADDRESS", "Address"}}),
+    #"Filtered Rows5" = Table.SelectRows(#"Renamed Columns", each ([STATION] <> "LAST UPDATED: 8/9/24")),
+    #"Sorted Rows" = Table.Sort(#"Filtered Rows5",{{"STATION", Order.Ascending}}),
+    #"Renamed Columns2" = Table.RenameColumns(#"Sorted Rows",{{"STATION", "Station"}}),
+    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns2",{"Type", "Station", "Phone Number", "Local Number", "EMAIL", "Address"})
+in
+    #"Removed Other Columns"
