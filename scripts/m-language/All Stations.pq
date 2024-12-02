@@ -1,5 +1,5 @@
 let
-    Source = Table.Combine({AgentStations, CompanyStations}),
+    Source = Table.Combine({#"Agent Stations", #"Company Stations"}),
     #"Renamed Columns" = Table.RenameColumns(Source,{{"Type", "Region"}}),
     #"Sorted Rows" = Table.Sort(#"Renamed Columns",{{"Region", Order.Ascending}}),
     #"Changed Type" = Table.TransformColumnTypes(#"Sorted Rows",{{"Station", type text}, {"Address", type text}}),
