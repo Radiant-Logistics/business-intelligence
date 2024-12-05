@@ -21,6 +21,23 @@ let
     #"Filled Down" = Table.FillDown(#"Filtered Rows5",{"STATION"}),
     #"Sorted Rows" = Table.Sort(#"Filled Down",{{"STATION", Order.Ascending}}),
     #"Renamed Columns2" = Table.RenameColumns(#"Sorted Rows",{{"STATION", "Station"}}),
-    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns2",{"Type", "Station", "Phone Number", "Local Number", "EMAIL", "Address"})
+    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns2",{"Type", "Station", "Phone Number", "Local Number", "EMAIL", "Address", "MANAGER/OWNER"}),
+    #"Replaced Value2" = Table.ReplaceValue(#"Removed Other Columns","PHL","R25PHL",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","PIT","R40PIT",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3","PHX","R28PHX",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value5" = Table.ReplaceValue(#"Replaced Value4","RMF","R29MFE",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value6" = Table.ReplaceValue(#"Replaced Value5","DCA","R35DCA",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value7" = Table.ReplaceValue(#"Replaced Value6","CVG","R45CVG",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value8" = Table.ReplaceValue(#"Replaced Value7","DTW","S63DTW",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value9" = Table.ReplaceValue(#"Replaced Value8","EWR","R41EWR",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value10" = Table.ReplaceValue(#"Replaced Value9","JFK","R46JFK",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value11" = Table.ReplaceValue(#"Replaced Value10","LAX","R81LAX",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value12" = Table.ReplaceValue(#"Replaced Value11","MDT","R71MDT",Replacer.ReplaceText,{"Station"}),
+    #"Replaced Value13" = Table.ReplaceValue(#"Replaced Value12","IAH ","S33IAH",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value14" = Table.ReplaceValue(#"Replaced Value13","MIA","R98MIA",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value15" = Table.ReplaceValue(#"Replaced Value14","MKC","R44MKC",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value16" = Table.ReplaceValue(#"Replaced Value15","Head Office","Canada",Replacer.ReplaceText,{"Station"}),
+    #"Replaced Value17" = Table.ReplaceValue(#"Replaced Value16","LRD","R17LRD",Replacer.ReplaceValue,{"Station"}),
+    #"Replaced Value18" = Table.ReplaceValue(#"Replaced Value17","MFE","R29MFE",Replacer.ReplaceValue,{"Station"})
 in
-    #"Removed Other Columns"
+    #"Replaced Value18"

@@ -20,10 +20,12 @@ let
 ),
     #"Changed Type2" = Table.TransformColumnTypes(#"Added Conditional Column",{ {"Brand", type text}}),
     #"Sorted Rows1" = Table.Sort(#"Changed Type2",{{"Station", Order.Ascending}}),
-    #"Removed Other Columns" = Table.SelectColumns(#"Sorted Rows1",{"Brand", "Address", "Region", "Station", "Phone Number", "Local Number"}),
-    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Address] <> null)),
-    #"Cleaned Text" = Table.TransformColumns(#"Filtered Rows",{{"Brand", Text.Clean, type text}, {"Address", Text.Clean, type text}, {"Region", Text.Clean, type text}, {"Station", Text.Clean, type text}, {"Phone Number", Text.Clean, type text}, {"Local Number", Text.Clean, type text}}),
-    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Brand", Text.Trim, type text}, {"Address", Text.Trim, type text}, {"Region", Text.Trim, type text}, {"Station", Text.Trim, type text}, {"Phone Number", Text.Trim, type text}, {"Local Number", Text.Trim, type text}}),
-    #"Reordered Columns" = Table.ReorderColumns(#"Trimmed Text",{"Station", "Brand", "Region", "Address", "Phone Number", "Local Number"})
+    #"Removed Other Columns" = Table.SelectColumns(#"Sorted Rows1",{"Station", "EMAIL", "MANAGER/OWNER"}),
+    #"Cleaned Text" = Table.TransformColumns(#"Removed Other Columns",{{"Station", Text.Clean, type text}, {"EMAIL", Text.Clean, type text}, {"MANAGER/OWNER", Text.Clean, type text}}),
+    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Station", Text.Trim, type text}, {"EMAIL", Text.Trim, type text}, {"MANAGER/OWNER", Text.Trim, type text}}),
+    #"Replaced Value" = Table.ReplaceValue(#"Trimmed Text","Charlie Justice","Charles Justice",Replacer.ReplaceText,{"MANAGER/OWNER"}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Replaced Value",{"Station", "MANAGER/OWNER", "EMAIL"}),
+    #"Sorted Rows2" = Table.Sort(#"Reordered Columns",{{"MANAGER/OWNER", Order.Ascending}}),
+    #"Removed Duplicates" = Table.Distinct(#"Sorted Rows2")
 in
-    #"Reordered Columns"
+    #"Removed Duplicates"
