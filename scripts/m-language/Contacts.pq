@@ -23,6 +23,9 @@ let
     #"Sorted Rows" = Table.Sort(#"Removed Other Columns",{{"Name", Order.Ascending}}),
     #"Trimmed Text" = Table.TransformColumns(#"Sorted Rows",{{"Name", Text.Trim, type text}, {"Email", Text.Trim, type text}, {"Station", Text.Trim, type text}, {"Region", Text.Trim, type text}, {"Brand", Text.Trim, type text}}),
     #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Name", Text.Clean, type text}, {"Email", Text.Clean, type text}, {"Station", Text.Clean, type text}, {"Region", Text.Clean, type text}, {"Brand", Text.Clean, type text}}),
-    #"Removed Duplicates" = Table.Distinct(#"Cleaned Text")
+    #"Removed Duplicates" = Table.Distinct(#"Cleaned Text"),
+    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 1, 1, Int64.Type),
+    #"Renamed Columns2" = Table.RenameColumns(#"Added Index",{{"Index", "ID"}}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Renamed Columns2",{"ID", "Name", "Email", "Station", "Region", "Brand"})
 in
-    #"Removed Duplicates"
+    #"Reordered Columns"
