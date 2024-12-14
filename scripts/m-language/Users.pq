@@ -13,6 +13,7 @@ let
     #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"Contacts[Name]", "Name"}, {"Contacts[Email]", "Email"}, {"Contacts[Station]", "Station"}, {"Contacts[Region]", "Region"}, {"Contacts[Brand]", "Brand"}}),
     #"Added Index" = Table.AddIndexColumn(#"Renamed Columns", "Index", 1, 1, Text.Type),
     #"Reordered Columns" = Table.ReorderColumns(#"Added Index",{"Index", "Name", "Email", "Station", "Region", "Brand"}),
-    #"Renamed Columns1" = Table.RenameColumns(#"Reordered Columns",{{"Index", "ID"}})
+    #"Renamed Columns1" = Table.RenameColumns(#"Reordered Columns",{{"Index", "ID"}}),
+    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns1","B74MFE","B47MFE",Replacer.ReplaceText,{"Station"})
 in
-    #"Renamed Columns1"
+    #"Replaced Value"

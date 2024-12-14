@@ -17,7 +17,8 @@ let
     else if Text.Contains([EMAIL], "sba") then "SBA"
     else null
 ),
-    #"Changed Type2" = Table.TransformColumnTypes(#"Added Conditional Column",{ {"Brand", type text}}),
+    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Added Conditional Column", {"Brand"}),
+    #"Changed Type2" = Table.TransformColumnTypes(#"Removed Errors",{ {"Brand", type text}}),
     #"Renamed Columns1" = Table.RenameColumns(#"Changed Type2",{{"EMAIL", "Email"}, {"MANAGER/OWNER", "Name"}}),
     #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns1",{"Name", "Email", "Station", "Region", "Brand"}),
     #"Sorted Rows" = Table.Sort(#"Removed Other Columns",{{"Name", Order.Ascending}}),
