@@ -12,7 +12,9 @@ let
     #"Removed Duplicates1" = Table.Distinct(#"Expanded AllStations", {"Station"}),
     #"Renamed Columns1" = Table.RenameColumns(#"Removed Duplicates1",{{"Station", "Name"}}),
     #"Filtered Rows1" = Table.SelectRows(#"Renamed Columns1", each [Region] <> null and [Region] <> ""),
-    #"Appended Query" = Table.Combine({#"Filtered Rows1", Blanks}),
-    #"Sorted Rows" = Table.Sort(#"Appended Query",{{"Name", Order.Ascending}})
+    #"Appended Query" = Table.Combine({#"Filtered Rows1", BlankStations}),
+    #"Sorted Rows" = Table.Sort(#"Appended Query",{{"Name", Order.Ascending}}),
+    #"Added Index" = Table.AddIndexColumn(#"Sorted Rows", "StationID", 1, 1, Int64.Type),
+    #"Reordered Columns" = Table.ReorderColumns(#"Added Index",{"StationID", "Name", "Region", "Brand"})
 in
-    #"Sorted Rows"
+    #"Reordered Columns"

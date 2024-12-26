@@ -1,6 +1,6 @@
 let
     Source = SharePoint.Files("https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC", [ApiVersion = 15]),
-    #"Filtered Rows" = Table.SelectRows(Source, each [Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Dashboards/Master Data/" and Text.Contains([Name], "Radiant Directory")),
+    #"Filtered Rows" = Table.SelectRows(Source, each [Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Dashboards/Data/" and Text.Contains([Name], "Radiant Directory")),
     #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
     #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (2)", each #"Transform File (2)"([Content])),
     #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
@@ -17,7 +17,7 @@ let
     #"Filtered Rows3" = Table.SelectRows(#"Replaced Value1", each [Merged] <> null and [Merged] <> ""),
     #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows3",{"Merged"}),
     #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Company Stores", "Type"}, {"TOLL FREE #", "Phone Number"}, {"LOCAL #", "Local Number"}, {"ADDRESS", "Address"}}),
-    #"Filtered Rows5" = Table.SelectRows(#"Renamed Columns", each ([STATION] <> "LAST UPDATED: 8/9/24") and ([Local Number] <> "                               RADIANT CANADA" and [Local Number] <> "                               RADIANT JAPAN" and [Local Number] <> "                               RADIANT MEXICO" and [Local Number] <> "                               RADIANT SHANGHAI" and [Local Number] <> "ADDITIONAL CONTACTS" and [Local Number] <> "RADIANT CANADA" and [Local Number] <> "RADIANT ROAD & RAIL")),
+    #"Filtered Rows5" = Table.SelectRows(#"Renamed Columns", each ([Local Number] <> "                               RADIANT CANADA" and [Local Number] <> "                               RADIANT JAPAN" and [Local Number] <> "                               RADIANT MEXICO" and [Local Number] <> "                               RADIANT SHANGHAI" and [Local Number] <> "ADDITIONAL CONTACTS" and [Local Number] <> "RADIANT CANADA" and [Local Number] <> "RADIANT ROAD & RAIL")),
     #"Filled Down" = Table.FillDown(#"Filtered Rows5",{"STATION"}),
     #"Sorted Rows" = Table.Sort(#"Filled Down",{{"STATION", Order.Ascending}}),
     #"Renamed Columns2" = Table.RenameColumns(#"Sorted Rows",{{"STATION", "Station"}}),
@@ -32,11 +32,11 @@ let
     #"Replaced Value9" = Table.ReplaceValue(#"Replaced Value8","EWR","R41EWR",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value10" = Table.ReplaceValue(#"Replaced Value9","JFK","R46JFK",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value11" = Table.ReplaceValue(#"Replaced Value10","LAX","R81LAX",Replacer.ReplaceValue,{"Station"}),
-    #"Replaced Value12" = Table.ReplaceValue(#"Replaced Value11","MDT","R71MDT",Replacer.ReplaceText,{"Station"}),
+    #"Replaced Value12" = Table.ReplaceValue(#"Replaced Value11","MDT","R71MDT",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value13" = Table.ReplaceValue(#"Replaced Value12","IAH ","S33IAH",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value14" = Table.ReplaceValue(#"Replaced Value13","MIA","R98MIA",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value15" = Table.ReplaceValue(#"Replaced Value14","MKC","R44MKC",Replacer.ReplaceValue,{"Station"}),
-    #"Replaced Value16" = Table.ReplaceValue(#"Replaced Value15","Head Office","Canada",Replacer.ReplaceText,{"Station"}),
+    #"Replaced Value16" = Table.ReplaceValue(#"Replaced Value15","Head Office","Canada",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value17" = Table.ReplaceValue(#"Replaced Value16","LRD","R17LRD",Replacer.ReplaceValue,{"Station"}),
     #"Replaced Value18" = Table.ReplaceValue(#"Replaced Value17","MFE","R29MFE",Replacer.ReplaceValue,{"Station"})
 in
