@@ -1,0 +1,199 @@
+ID,Days,Name,AcIn,DA,EA,EO,DA_order,SatWeekDay,SunWeekDay,Sent,groupType
+1,,OTHER,True,True,False,False,11,False,False,True,5
+2,0.0,SAME DAY,True,True,False,False,1,True,True,True,1
+6,3.0,THIRD DAY,True,True,False,False,5,False,False,True,4
+7,5.0,ECONOMY (3-5 DAYS),False,False,False,False,99,False,False,True,5
+8,1.0,EXPRESS (Next Day),False,True,False,False,99,False,False,True,2
+9,2.0,STANDARD (2 DAYS),False,False,False,False,0,False,False,True,0
+10,1.0,SPECIAL,True,False,True,True,12,False,False,True,11
+11,1.0,OVERNIGHT,True,False,True,False,12,False,False,True,12
+12,5.0,WHITE GLV Signature+,True,True,False,False,99,False,False,True,9
+13,,PREMIUM,True,False,True,False,99,False,False,True,12
+14,,STANDARD,True,False,True,True,12,False,False,True,5
+15,,ECONOMY,True,False,True,False,99,False,False,True,12
+16,,LTL,True,True,False,False,11,False,False,True,6
+17,0.0,NFO,True,True,False,False,0,True,True,True,1
+18,,OTC,False,True,True,True,99,False,False,True,11
+19,1.0,NEXT DAY,True,True,False,False,3,False,False,True,2
+20,2.0,SECOND DAY,True,True,False,False,4,False,False,True,3
+21,5.0,DEFERRED 3-5 DAY,True,True,False,False,6,False,False,True,5
+22,,TRUCK LOAD (FTL),True,True,False,False,7,False,False,True,7
+23,,CROSS DOCK,False,False,False,False,0,False,False,True,8
+24,,LOCAL,True,True,False,False,8,False,False,True,18
+25,,STORAGE / WAREHOUSE,True,True,True,True,12,False,False,True,8
+26,,AIR CHARTER,True,False,True,False,12,False,False,True,17
+27,,AIR EXPORT,True,False,True,False,12,False,False,True,12
+28,,AIR IMPORT,True,False,True,False,12,False,False,True,13
+29,,EXPRESS/COURIER,False,False,True,False,99,False,False,True,12
+30,,ONBOARD COURIER,True,False,True,False,12,False,False,True,12
+31,,FCL EXPORT,True,False,False,True,12,False,False,True,14
+32,,FCL IMPORT,True,False,False,True,12,False,False,True,15
+33,,LCL EXPORT,True,False,False,True,12,False,False,True,14
+34,,LCL IMPORT,True,False,False,True,12,False,False,True,15
+35,,BULK IMPORT,True,False,False,True,12,False,False,True,15
+36,,BULK EXPORT,True,False,False,True,12,False,False,True,14
+37,,VESSEL CHARTER,False,False,False,True,0,False,False,True,0
+38,4.0,FOUR DAY,True,True,False,False,11,False,False,True,19
+39,,DOMESTIC OCEAN,True,True,False,False,99,False,False,True,5
+40,,COMAT,True,True,True,True,51,False,False,True,5
+41,,HOT SHOT/EXCLUSIVE,True,True,False,False,11,False,False,True,10
+42,1.0,NEXT DAY SATURDAY,False,False,False,False,99,True,False,True,2
+43,5.0,HOME-PROPERTY DEL,False,True,False,False,14,False,False,True,9
+44,5.0,THRESHOLD,True,True,False,False,15,False,False,True,9
+45,5.0,HOME-PLACEMENT DEL,False,True,False,False,16,False,False,True,9
+46,5.0,HOME-SETUP DEL,False,False,False,False,17,False,False,True,9
+47,,EXPRESS LETTER,False,False,True,False,99,False,False,True,12
+48,,EXPRESS PACKAGE,True,False,True,False,12,False,False,True,12
+49,,FCL EXP COMPANY B/L,True,False,False,True,12,False,False,True,14
+50,,FCL IMP COMPANY B/L,True,False,False,True,12,False,False,True,15
+51,,FTL EXPORT,True,False,True,False,12,False,False,True,12
+52,,FTL IMPORT,True,False,True,False,12,False,False,True,13
+53,,LTL EXPORT,True,False,True,False,12,False,False,True,6
+54,,LTL IMPORT,True,False,True,False,12,False,False,True,6
+55,,STANDARD LETTER,True,False,True,False,99,False,False,True,12
+56,,STANDARD PACKAGE,True,False,True,False,12,False,False,True,12
+57,,XINTERNATIONAL-AIR,True,False,True,False,53,False,False,True,12
+58,,XINTERNATION-OCEAN,True,False,False,True,53,False,False,True,14
+59,5.0,XPHARM-DEF 3-5 PR,False,False,False,False,99,False,False,True,5
+60,1.0,XPHARM-NEXT DAY PR,False,False,True,False,99,False,False,True,2
+61,2.0,XPHARM-SECOND DAY PR,False,False,True,False,99,False,False,True,3
+62,,XPHARM-STANDARD PR,False,False,True,False,0,False,False,True,0
+63,2.0,XPUERTO RICO-2 DAYS,False,False,False,False,0,False,False,True,0
+64,3.0,XPUERTO RICO-3 DAYS,False,False,False,False,0,False,False,True,0
+65,4.0,XPUERTO RICO-4 DAYS,False,False,False,False,0,False,False,True,0
+66,5.0,XPUERTO RICO-5 DAYS,False,False,False,False,0,False,False,True,0
+67,0.0,XPUERTO RICO-NFO,False,False,False,False,0,False,False,True,0
+68,1.0,XPUERTO RICO-OVN,False,False,False,False,0,False,False,True,0
+69,2.0,XAIR FREIGHT-2 DAYS,False,False,False,False,99,False,False,True,3
+70,3.0,XAIR FREIGHT-3 DAYS,False,False,False,False,99,False,False,True,4
+71,4.0,XAIR FREIGHT-4 DAYS,False,False,False,False,99,False,False,True,5
+72,5.0,XAIR FREIGHT-5 DAYS,False,False,False,False,99,False,False,True,5
+73,,XAIR FREIGHT-DISPSL,False,False,False,False,99,False,False,True,8
+74,,XAIR FREIGHT-NFO,False,False,False,False,99,False,False,True,1
+75,1.0,XAIR FREIGHT-OVN,False,False,False,False,99,False,False,True,2
+76,,XAIR FREIGHT-STORAGE,False,True,False,False,99,False,False,True,8
+77,2.0,"XAK, HI-2 DAYS",False,False,False,False,99,False,False,True,3
+78,3.0,"XAK, HI-3 DAYS",False,False,False,False,99,False,False,True,4
+79,4.0,"XAK, HI-4 DAYS",False,False,False,False,99,False,False,True,5
+80,5.0,"XAK, HI-5 DAYS",False,False,False,False,99,False,False,True,5
+81,1.0,"XAK,HI-OVERNIGHT",False,False,False,False,99,False,False,True,2
+82,,"XALASKA, HAWAII-NFO",False,False,False,False,99,False,False,True,1
+83,2.0,XPHARM-2ND DAY AKHI,False,True,False,False,99,False,False,True,3
+84,3.0,XPHARM-3 DAY DEL,False,False,False,False,99,False,False,True,4
+85,5.0,XPHARM-DEF 3-5 AKHI,False,True,False,False,99,False,False,True,5
+86,5.0,XPHARM-DEF 3-5 DAYS,False,True,False,False,99,False,False,True,5
+87,1.0,XPHARM-NEXT DAY,False,True,False,False,99,False,False,True,2
+88,1.0,XPHARM-NEXT DAY AKHI,False,True,False,False,99,False,False,True,2
+89,2.0,XPHARM-SECOND DAY,False,True,False,False,99,False,False,True,3
+90,,XPHARM-STANDARD,False,True,False,False,99,False,False,True,5
+91,,XPHARM-STANDARD AKHI,False,True,False,False,99,False,False,True,5
+92,,XPHARM-STANDARD HI,False,True,False,False,99,False,False,True,5
+93,2.0,XQUOTE-HOTSHOT 2 DAY,False,True,False,False,99,False,False,True,10
+94,3.0,XQUOTE-HOTSHOT 3 DAY,False,True,False,False,99,False,False,True,10
+95,4.0,XQUOTE-HOTSHOT 4 DAY,False,True,False,False,99,False,False,True,10
+96,5.0,XQUOTE-HOTSHOT 5 DAY,False,True,False,False,99,False,False,True,10
+97,1.0,XQUOTE-HOTSHOT OVN,False,True,False,False,99,False,False,True,10
+98,,XQUOTE-HOTSHOT SD,False,False,False,False,99,False,False,True,10
+99,,XQUOTE-HOTSHOT TEAMS,False,True,False,False,99,False,False,True,10
+100,,INTL COURIER,False,False,True,False,99,False,False,True,12
+101,,MBE,True,False,True,True,99,False,False,True,11
+102,,SPECIAL - PDX,False,True,False,False,21,False,False,True,7
+103,,YAIRIMPORT,True,False,True,False,12,False,False,True,13
+104,,YAIREXPORT,True,False,True,False,12,False,False,True,12
+105,,YOCEAN IMPORT,True,False,False,True,12,False,False,True,15
+106,,YOCEAN EXPORT,True,False,False,True,12,False,False,True,14
+107,1.0,NEXT DAY AM,True,True,False,False,3,True,True,True,2
+108,,SATURDAY,True,True,True,False,9,False,False,True,2
+109,,110-FTL,True,True,False,False,13,False,False,True,7
+110,,PROJECT,True,True,False,False,12,False,False,True,11
+111,1.0,HEAVY WT NEXT DAY,False,False,False,False,0,False,False,True,0
+112,2.0,HEAVY WT SECOND DAY,False,False,False,False,0,False,False,True,0
+113,3.0,HEAVY WT THIRD DAY,False,False,False,False,0,False,False,True,0
+114,5.0,HEAVY WT ECONOMY,False,False,False,False,0,False,False,True,0
+115,,SPECIAL - EWR,False,True,False,False,99,False,False,True,7
+116,1.0,NEXT DAY LETTER,True,True,False,False,2,False,False,True,2
+117,,CUSTOMS CLEARANCE,True,False,True,True,99,False,False,True,14
+118,,CANADA,True,True,True,False,99,False,False,True,5
+119,1.0,LINEHAUL STL,True,True,False,False,50,False,False,True,5
+120,,CHARTER,True,True,False,False,11,False,False,True,16
+121,7.0,110-LTL,True,True,False,False,99,False,False,True,6
+122,10.0,Ground 5-10,True,True,False,False,99,False,False,True,20
+123,,AIR,True,True,True,False,9,False,False,True,2
+124,,HAND CARRY,True,True,False,False,19,False,False,True,23
+125,,FLATBED,True,True,False,False,18,False,False,True,7
+126,,SPECIALIZED,False,True,False,False,10,False,False,True,0
+127,,BRIDGE CROSSING,False,False,False,False,0,False,False,True,0
+128,,LTL-Guarantee,True,True,False,False,99,False,False,True,6
+129,,Uncrated-Sameday,False,True,True,True,86,False,False,True,9
+130,1.0,Uncrated-Next Day,True,True,True,True,86,False,False,True,9
+131,2.0,Uncrated-Second Day,True,True,True,True,86,False,False,True,9
+132,3.0,Uncrated-Third Day,True,True,True,True,86,False,False,True,9
+133,4.0,Uncrated-Four Day,True,True,True,True,90,False,False,True,9
+134,5.0,Uncrated-3-5 Day D.,True,True,True,True,91,False,False,True,9
+135,,Uncrated-Truckload,True,True,True,True,90,False,False,True,9
+136,,LTL Multileg,True,True,True,True,99,False,False,True,6
+137,,FTL Multileg,True,True,True,True,99,False,False,True,7
+138,,Hot Shot Multileg,True,True,True,True,99,False,False,True,10
+139,,LTL Consolidated,True,True,False,False,99,False,False,True,6
+140,,LTL Volume,True,True,True,False,99,False,False,True,6
+141,,EPO Pass-thru,False,True,True,True,99,False,False,True,11
+142,,Management Fee,True,True,True,True,99,False,False,True,11
+143,,Fulfillment,True,True,False,False,99,False,False,True,8
+144,,FiscalRepresentative,True,False,True,False,99,False,False,True,11
+145,,Crating CORP,True,True,True,True,99,False,False,True,8
+146,,Crating LOCAL,True,True,True,True,99,False,False,True,8
+147,,FL,True,True,True,True,10,False,False,True,7
+148,0.0,WILL CALL,True,True,False,False,0,True,True,True,22
+149,,Puerto Rico,True,True,False,False,99,False,False,True,1
+150,,Panama,True,True,False,False,99,True,True,True,1
+151,0.0,Schedule,True,True,False,False,0,True,True,True,21
+152,3.0,WeekEnd Saver,True,True,False,False,99,True,True,True,5
+153,,FD Service,True,True,False,False,99,False,False,True,7
+154,,RO/RO,True,False,False,True,99,False,False,True,15
+155,,Rail Moves,True,True,False,False,99,False,False,True,11
+156,,LTL Collect,True,True,True,True,99,False,False,True,6
+157,,Ground Collect,True,True,True,True,99,False,False,True,20
+158,7.0,Residential,True,True,False,False,99,False,False,True,9
+159,,REBILL,True,True,True,True,99,False,False,True,11
+160,4.0,4-5 DAY,True,True,False,False,99,False,False,True,5
+161,,APPOINTMENT,True,True,False,False,99,False,False,True,9
+162,,DEL ON,True,True,True,True,99,False,False,True,5
+163,,DEL BY,True,True,True,True,99,False,False,True,5
+164,,LOCAL (INTL),True,False,True,False,99,False,False,True,12
+165,,SCH Puerto Rico,True,True,False,False,99,False,False,True,21
+166,,Ground Expedite,True,True,True,True,99,False,False,True,20
+167,,Next Day PM,True,True,True,True,99,False,False,True,2
+168,,VIP,False,True,True,True,99,False,False,True,9
+169,,AIR EXPRESS,False,True,True,True,99,False,False,True,2
+170,9.0,Ground,True,True,False,False,99,True,True,True,20
+171,,THRESHOLD +,False,True,False,False,99,False,False,True,9
+172,,WHT GLOVE 1 PERSON,False,True,False,False,99,False,False,True,9
+173,,WHT GLOVE 2 PERSON,True,True,False,False,99,False,False,True,9
+174,,WHT GLOVE 1 PERSON +,True,True,False,False,99,False,False,True,9
+175,,WHT GLOVE 2 PERSON +,False,True,False,False,99,False,False,True,9
+176,,BLANKET WRAP,True,True,False,False,99,False,False,True,9
+177,,LTL- Refrigerated,False,True,True,True,99,False,False,True,6
+178,,FTL- Refrigerated,True,True,True,True,99,False,False,True,7
+179,,AOG,True,True,True,False,99,False,False,True,16
+180,,Events,True,True,False,False,99,False,False,True,11
+181,2.0,NEXT DAY-DCA,True,True,False,False,99,False,False,True,3
+182,3.0,TWO  DAY-DCA,True,True,False,False,99,False,False,True,4
+183,,OTR SELECT,True,True,True,True,99,False,False,True,7
+184,,Work Stge:3 day/less,True,True,True,True,99,False,False,True,0
+185,,Urgent:6days or less,True,True,True,True,0,False,False,True,0
+186,,Routine:9days/less,True,True,True,True,0,False,False,True,0
+187,,Sea:31days or less,True,True,True,True,99,False,False,True,0
+188,,D1-Next Business Day,True,True,True,True,99,False,False,False,0
+189,,D2- 2nd Business Day,True,True,True,True,99,False,False,False,0
+190,,D3-By5thBusiness Day,True,True,True,True,99,False,False,False,0
+191,,SG- Next Flight Out,True,True,True,True,99,False,False,False,0
+192,,IC,False,True,True,True,0,False,False,False,0
+193,,FRT LCL EXP,True,False,False,True,0,False,False,True,0
+194,,FRT FCL EXP,True,False,False,True,0,False,False,True,0
+195,,FRT LCL IMP,True,False,False,True,0,False,False,True,0
+196,,FRT FCL IMP,True,False,False,True,0,False,False,True,0
+197,,SVCS LCL EXP,True,False,False,True,0,False,False,True,0
+198,,SVCS FCL IMP,True,False,False,True,0,False,False,True,0
+199,,SVCS LCL IMP,True,False,False,True,0,False,False,True,0
+200,,SVCS FCL EXP,True,False,False,True,0,False,False,True,0
+201,,LIVE ANIMALS,True,True,True,False,0,False,False,False,0

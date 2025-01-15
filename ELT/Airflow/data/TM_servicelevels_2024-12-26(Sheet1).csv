@@ -1,0 +1,104 @@
+Transportation Service Level - Sales,Name,Delivery in Days
+0D,SAME DAY,0
+1A,NEXT DAY AM,1
+1D,NEXT DAY,1
+2D,SECOND DAY,2
+3D,THIRD DAY,3
+4D,FOUR DAY,4
+5D,4-5 DAY,5
+AC,AIR CHARTER,0
+AE,EXPRESS,0
+AI,AIR,0
+AM,Air Import,0
+AO,AOG,0
+AP,APPOINTMENT,0
+AX,AIR EXPORT,0
+BC,Basic – To the ground level door,5
+BS,Basic Signature Release,5
+CA,CANADA,0
+CC,Crating CORP,0
+CH,Customs Clearance,0
+CL,Crating LOCAL,0
+CO,COMAT,0
+CU,Courier,0
+D1,DCA-1,2
+D2,DCA-2,3
+DB,DEL BY,0
+DF,DEFERRED 3-5 DAY,5
+DO,DEL ON,0
+DR,Deluxe/Room of Choice,5
+DT,Direct,0
+E1,EXPRESS (Next Day),1
+EC,Economy,0
+EP,EXPEDITE - Guaranteed Exclusive Use,0
+EV,Events,0
+FB,FLATBED,0
+FD,Domestic FCL Ocean,0
+FE,FTL Export,0
+FI,FTL Import,0
+FL,FL,0
+FR,FTL- Refrigerated,0
+FS,FD Service,0
+FT,TRUCK LOAD (FTL),0
+FU,Fulfillment,0
+G1,GS10 - Guaranteed by 10 PM,0
+G9,Ground 5-10,10
+GA,GSAM - Guaranteed by 12 PM,0
+GC,Ground Collect,0
+GE,Ground Expedite,0
+GR,Ground,9
+GS,GUR - Guaranteed by 5 PM,0
+HC,HAND CARRY,0
+HD,HOME-THRESHOLD DEL,0
+HM,Hot Shot Multileg,0
+HS,HOT SHOT/EXCLUSIVE,0
+IA,IATA,0
+LC,LTL Collect,0
+LE,LTL Export,0
+LG,LTL-Guarantee,0
+LI,LTL Import,0
+LM,LTL Multileg,0
+LO,LOCAL,0
+LS,LINEHAUL STL,1
+LT,LTL,0
+LV,LTL Volume,0
+LX,LTL Consolidated,0
+ML,FTL Multileg,0
+NF,NFO,0
+NL,NEXT DAY LETTER,1
+NP,Next Day PM,1
+OB,On Board Courier,0
+OC,Ocean Services,0
+OF,Ocean Freight,0
+OS,OTR SELECT,0
+OT,OTHER,0
+PA,Panama,0
+PM,Premium,0
+PR,SCH Puerto Rico,0
+PS,Premier/Set Up,5
+PT,PROJECT,0
+PW,Ocean Documentation,0
+RA,RMA,5
+RB,REBILL,0
+RM,Rail Moves,0
+RO,Routine,0
+RS,Residential,7
+SA,SATURDAY,0
+SC,Schedule,0
+SN,Standard Consol,0
+ST,STD - Standard Service,0
+SW,Swap,0
+TH,THRESHOLD,5
+U1,Uncrated-Next Day,1
+U2,Uncrated-Second Day,2
+U3,Uncrated-Third Day,3
+U4,Uncrated-Four Day,4
+U5,Uncrated-3-5 Day D.,5
+UR,Urgent Shipment,0
+W2,WHT GLOVE 2 PERSON,0
+WC,WILL CALL,0
+WG,WHITE GLOVE,0
+WH,STORAGE / WAREHOUSE,0
+WK,WeekEnd Saver,3
+WO,Work Stoppage,0
+WS,WHITE GLV Signature+,5
