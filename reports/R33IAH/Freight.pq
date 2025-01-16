@@ -1,7 +1,8 @@
 let
     Source = SharePoint.Files("https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC", [ApiVersion = 15]),
-    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Reports/R33IAH/")),
-    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Content"}),
+    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Reports/R33IAH/Pure Storage Monthly Report/Source/")),
+    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", let latest = List.Max(#"Filtered Rows"[Date created]) in each [Date created] = latest),
+    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content"}),
     #"Filtered Hidden Files1" = Table.SelectRows(#"Removed Other Columns", each [Attributes]?[Hidden]? <> true),
     #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
     #"Removed Other Columns1" = Table.SelectColumns(#"Invoke Custom Function1", {"Transform File"}),
@@ -13,11 +14,9 @@ let
   #"Removed columns 1" = Table.RemoveColumns(#"Reordered columns", {"Product Description", "POD Time", "POD Date", "POD By", "Service Level", "Dim Wgt", "Actual Wgt", "Cargo Pcs", "Consignee Zip", "Consignee Name", "Dest A/P", "Origin A/P", "Ship Ref", "Shipper Zip", "Shipper State", "Shipper City", "Shipper Addr 1", "Shipper Name", "Pickup Date", "Invoice Total"}),
   #"Filtered rows" = Table.SelectRows(#"Removed columns 1", each ([Line Item] <> "Total")),
   #"Uppercased text" = Table.TransformColumns(#"Filtered rows", {{"Line Description", each Text.Upper(_), type nullable text}}),
-  #"Filtered rows 1" = Table.SelectRows(#"Uppercased text", each ([Line Description] = "BEYOND DELIVERY" or [Line Description] = "FREIGHT CHARGES" or [Line Description] = "FUEL SURCHARGE")),
-  #"Grouped rows" = Table.Group(#"Filtered rows 1", {"Hawb", "Line Description"}, {{"Charges", each List.Sum([Amount]), type nullable number}}),
-  #"Renamed columns" = Table.RenameColumns(#"Grouped rows", {{"Line Description", "Description"}}),
-  #"Appended query" = Table.Combine({#"Renamed columns", Accessorials}),
-  #"Changed column type 1" = Table.TransformColumnTypes(#"Appended query", {{"Hawb", type text}, {"Charges", Currency.Type}}),
-  #"Filtered rows 2" = Table.SelectRows(#"Changed column type 1", each ([Description] = "FREIGHT CHARGES"))
+    #"Filtered rows 1" = Table.SelectRows(#"Uppercased text", each [Line Description] = "FREIGHT CHARGES"),
+    #"Grouped rows" = Table.Group(#"Filtered rows 1", {"Hawb", "Line Description"}, {{"Charges", each List.Sum([Amount]), type nullable number}}),
+    #"Renamed columns" = Table.RenameColumns(#"Grouped rows", {{"Line Description", "Description"}}),
+  #"Changed column type 1" = Table.TransformColumnTypes(#"Renamed columns", {{"Hawb", type text}, {"Charges", Currency.Type}})
 in
-  #"Filtered rows 2"
+    #"Changed column type 1"
