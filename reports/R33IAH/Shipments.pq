@@ -1,6 +1,6 @@
 let
     Source = SharePoint.Files("https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC", [ApiVersion = 15]),
-    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Reports/R33IAH/")),
+    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://radiantdelivers.sharepoint.com/sites/AsEasyAsECC/Shared Documents/Reports/R33IAH/Pure Storage Monthly Report/Source/")),
     #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", let latest = List.Max(#"Filtered Rows"[Date created]) in each [Date created] = latest),
     #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content"}),
     #"Filtered Hidden Files1" = Table.SelectRows(#"Removed Other Columns", each [Attributes]?[Hidden]? <> true),
@@ -12,21 +12,21 @@ let
   #"Removed columns" = Table.RemoveColumns(#"Changed column type", {"Acct ID", "Bill To Name", "Shipper Addr 2", "Consignee Addr 1", "Consignee Addr 2", "Consignee City", "Consignee State", "Port of Loading", "Port of Discharge", "Delivery Date", "Container Pcs", "Dim UoM", "Dim Factor", "Chrg Wgt Lbs", "Chrg Wgt Kg", "Project #", "Declared Value", "Insured Value", "ETD", "ETA", "Steamship Line/Carrier", "Steam Line Booking", "Carrier MBL", "Vessel", "Container Type", "Container Number", "Invoice Date", "Posted Date", "Business Doc", "Doc Type", "Line Item ID", "Total Cartage Cost", "Cost Complete"}),
   #"Reordered columns" = Table.ReorderColumns(#"Removed columns",{"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Cons Ref", "Bill to Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Invoice #", "Line Item", "Line Description", "Amount", "Invoice Total"}),
   #"Filtered rows" = Table.SelectRows(#"Reordered columns", each ([Line Item] = "Total")),
-  #"Removed columns 1" = Table.RemoveColumns(#"Filtered rows", {"Amount", "Line Description", "Line Item", "Invoice #"}),
+    #"Removed columns 1" = Table.RemoveColumns(#"Filtered rows", {"Amount", "Line Description", "Line Item", "Invoice #"}),
   #"Changed column type 1" = Table.TransformColumnTypes(#"Removed columns 1", {{"Hawb", type text}}),
   #"Merged queries" = Table.NestedJoin(#"Changed column type 1", {"Hawb"}, Freight, {"Hawb"}, "Freight", JoinKind.LeftOuter),
-  #"Expanded Freight" = Table.ExpandTableColumn(#"Merged queries", "Freight", {"Charges"}, {"Charges"}),
+    #"Expanded Freight" = Table.ExpandTableColumn(#"Merged queries", "Freight", {"Charges"}, {"Charges"}),
   #"Renamed columns" = Table.RenameColumns(#"Expanded Freight", {{"Charges", "Freight"}}),
   #"Merged queries 1" = Table.NestedJoin(#"Renamed columns", {"Hawb"}, Fuel, {"Hawb"}, "Fuel", JoinKind.LeftOuter),
   #"Expanded Fuel" = Table.ExpandTableColumn(#"Merged queries 1", "Fuel", {"Charges"}, {"Charges"}),
   #"Renamed columns 1" = Table.RenameColumns(#"Expanded Fuel", {{"Charges", "Fuel"}}),
   #"Merged queries 2" = Table.NestedJoin(#"Renamed columns 1", {"Hawb"}, Beyond, {"Hawb"}, "Beyond", JoinKind.LeftOuter),
-  #"Expanded Beyond" = Table.ExpandTableColumn(#"Merged queries 2", "Beyond", {"Charges"}, {"Charges"}),
+    #"Expanded Beyond" = Table.ExpandTableColumn(#"Merged queries 2", "Beyond", {"Charges"}, {"Charges"}),
   #"Renamed columns 2" = Table.RenameColumns(#"Expanded Beyond", {{"Charges", "Beyond"}}),
   #"Merged queries 3" = Table.NestedJoin(#"Renamed columns 2", {"Hawb"}, Accessorials, {"Hawb"}, "Accessorials", JoinKind.LeftOuter),
   #"Expanded Accessorials" = Table.ExpandTableColumn(#"Merged queries 3", "Accessorials", {"Charges"}, {"Charges"}),
   #"Renamed columns 3" = Table.RenameColumns(#"Expanded Accessorials", {{"Charges", "Accessorials"}}),
-  #"Reordered columns 1" = Table.ReorderColumns(#"Renamed columns 3", {"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Freight", "Fuel", "Beyond", "Accessorials", "Invoice Total"}),
+    #"Reordered columns 1" = Table.ReorderColumns(#"Renamed columns 3", {"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Freight", "Fuel", "Beyond", "Accessorials", "Invoice Total"}),
   #"Added custom" = Table.AddColumn(#"Reordered columns 1", "Transit Days", each Duration.Days([POD Date] - [Pickup Date])),
   #"Reordered columns 2" = Table.ReorderColumns(#"Added custom", {"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Transit Days", "Freight", "Fuel", "Beyond", "Accessorials", "Invoice Total"}),
   #"Changed column type 2" = Table.TransformColumnTypes(#"Reordered columns 2", {{"Transit Days", Int64.Type}}),
@@ -37,4 +37,4 @@ let
   #"Sorted rows" = Table.Sort(#"Removed columns 2", {{"Pickup Date", Order.Ascending}}),
   #"Changed column type 4" = Table.TransformColumnTypes(#"Sorted rows", {{"Invoice Total", Currency.Type}})
 in
-  #"Changed column type 4"
+    #"Changed column type 4"
