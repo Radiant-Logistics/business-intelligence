@@ -27,7 +27,13 @@ let
   #"Expanded Accessorials" = Table.ExpandTableColumn(#"Merged queries 3", "Accessorials", {"Charges"}, {"Charges"}),
   #"Renamed columns 3" = Table.RenameColumns(#"Expanded Accessorials", {{"Charges", "Accessorials"}}),
     #"Reordered columns 1" = Table.ReorderColumns(#"Renamed columns 3", {"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Freight", "Fuel", "Beyond", "Accessorials", "Invoice Total"}),
-  #"Added custom" = Table.AddColumn(#"Reordered columns 1", "Transit Days", each Duration.Days([POD Date] - [Pickup Date])),
+  #"Added custom" = Table.AddColumn(#"Reordered columns 1", "Transit Days", each let
+    StartDate = [Pickup Date],
+    EndDate = [POD Date],
+    DaysBetween = List.Dates(StartDate, Duration.Days(EndDate - StartDate), #duration(1,0,0,0)),
+    WeekdaysOnly = List.Count(List.Select(DaysBetween, each Date.DayOfWeek(_, Day.Monday) < 5))  
+in
+    WeekdaysOnly),
   #"Reordered columns 2" = Table.ReorderColumns(#"Added custom", {"Pickup Date", "Hawb", "Shipper Name", "Shipper Addr 1", "Shipper City", "Shipper State", "Shipper Zip", "Ship Ref", "Origin A/P", "Dest A/P", "Consignee Name", "Consignee Zip", "Cargo Pcs", "Actual Wgt", "Dim Wgt", "Service Level", "POD By", "POD Date", "POD Time", "Product Description", "Transit Days", "Freight", "Fuel", "Beyond", "Accessorials", "Invoice Total"}),
   #"Changed column type 2" = Table.TransformColumnTypes(#"Reordered columns 2", {{"Transit Days", Int64.Type}}),
   #"Inserted conditional column" = Table.AddColumn(#"Changed column type 2", "On Time", each if [Transit Days] <= 6 then "YES" else "NO"),
