@@ -14,9 +14,12 @@ let
   #"Removed columns 1" = Table.RemoveColumns(#"Reordered columns", {"Product Description", "POD Time", "POD Date", "POD By", "Service Level", "Dim Wgt", "Actual Wgt", "Cargo Pcs", "Consignee Zip", "Consignee Name", "Dest A/P", "Origin A/P", "Ship Ref", "Shipper Zip", "Shipper State", "Shipper City", "Shipper Addr 1", "Shipper Name", "Pickup Date", "Invoice Total"}),
   #"Filtered rows" = Table.SelectRows(#"Removed columns 1", each ([Line Item] <> "Total")),
   #"Uppercased text" = Table.TransformColumns(#"Filtered rows", {{"Line Description", each Text.Upper(_), type nullable text}}),
-  #"Filtered rows 1" = Table.SelectRows(#"Uppercased text", each Text.Contains([Line Description], "BEYOND")),
-  #"Grouped rows" = Table.Group(#"Filtered rows 1", {"Hawb", "Line Description"}, {{"Charges", each List.Sum([Amount]), type nullable number}}),
-  #"Renamed columns" = Table.RenameColumns(#"Grouped rows", {{"Line Description", "Description"}}),
-  #"Changed column type 1" = Table.TransformColumnTypes(#"Renamed columns", {{"Hawb", type text}, {"Charges", Currency.Type}})
+  #"Filtered rows 1" = Table.SelectRows(#"Uppercased text", each ([Line Description] <> "BEYOND DELIVERY" and [Line Description] <> "FREIGHT CHARGES" and [Line Description] <> "FUEL SURCHARGE")),
+  #"Grouped rows" = Table.Group(#"Filtered rows 1", {"Hawb"}, {{"Accessorials", each List.Sum([Amount]), type nullable number}}),
+  #"Changed column type 1" = Table.TransformColumnTypes(#"Grouped rows", {{"Accessorials", Currency.Type}}),
+  #"Renamed columns" = Table.RenameColumns(#"Changed column type 1", {{"Accessorials", "Charges"}}),
+  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Renamed columns", "Description", each "Accessorials"), {{"Description", type text}}),
+  #"Uppercased text 1" = Table.TransformColumns(#"Added custom", {{"Description", each Text.Upper(_), type nullable text}}),
+  #"Changed column type 2" = Table.TransformColumnTypes(#"Uppercased text 1", {{"Hawb", type text}})
 in
-    #"Changed column type 1"
+    #"Changed column type 2"
